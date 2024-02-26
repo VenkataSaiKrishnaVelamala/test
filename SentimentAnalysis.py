@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from mrjob.job import MRJob
 from mrjob.step import MRStep
 from nltk.tokenize import word_tokenize
