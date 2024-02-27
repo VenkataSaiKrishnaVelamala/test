@@ -44,7 +44,7 @@ class MRTitanicAnalysis(MRJob):
     
     # Step 2: Average Fare by Class
     def mapper_get_class_fare(self, _, line):
-        columns = line.split(',')
+        columns = self.parse_line(line)
         if columns[0] == "PassengerId":  # Skip header
             return
         pclass = columns[2]  # Assuming passenger class is in the 3rd column
