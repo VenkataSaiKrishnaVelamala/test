@@ -10,10 +10,24 @@ class MRTitanicAnalysis(MRJob):
             MRStep(mapper=self.mapper_get_class_fare,
                     reducer=self.reducer_calculate_average_fare_by_class)
         ]
+
+    def parse_line(self, line):
+        # Custom parsing logic to handle commas within quotes for names
+        fields = []
+        field_start = 0
+        in_quotes = False
+        for i, char in enumerate(line):
+            if char == '"' and line[i-1] != '\\':  # Ignore escaped quotes
+                in_quotes = not in_quotes
+            elif char == ',' and not in_quotes:
+                fields.append(line[field_start:i])
+                field_start = i + 1
+        fields.append(line[field_start:])  # Add the last field
+        return fields
     
     # Step 1: Survival Rate by Gender
     def mapper_get_gender_survived(self, _, line):
-        columns = line.split(',')
+        columns = self.parse_line(line)
         if columns[0] == "PassengerId":  # Skip header
             return
         gender = columns[4]  # Assuming gender is in the 5th column
