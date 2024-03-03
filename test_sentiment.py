@@ -50,7 +50,7 @@ class TwitterTest(MRJob):
         total_tweets=sum(sentiment_scores.values())
         for sentiment,count in sentiment_scores.items():
             percent=(count/total_tweets)*100
-            yield sentiment,f"{round(percent,ndigits=2)} %"
+            yield sentiment,round(percent,ndigits=2)
         
 
 if __name__ == '__main__':
